@@ -1,7 +1,8 @@
-books = []
+books = [{"title": "Python", "borrowed": None}, {"title": "PHP", "borrowed": None}]
+users = ["Izza", "Fathony"]
 
 def inputBook(title):
-    book = {"title": title, "borrowed": False}
+    book = {"title": title, "borrowed": None}
     books.append(book)
     print(book["title"], "successfully added")
 
@@ -10,7 +11,7 @@ def listBook():
     for i in range(len(books)):
         print(i + 1, ".", books[i]["title"], ", Borrowed :", books[i]["borrowed"])
 
-def borrowBook():
+def borrowBook(user):
     if not books:
         print("There are no books available to borrow")
         return
@@ -20,15 +21,15 @@ def borrowBook():
     numberBook = int(input("Choose Book : ")) - 1
 
     if numberBook < len(books):
-        if not books[numberBook]["borrowed"]:
-            books[numberBook]["borrowed"] = True
+        if books[numberBook]["borrowed"] is None:
+            books[numberBook]["borrowed"] = users[user - 1]
             print("You have borrowed a book", books[numberBook]["title"])
         else:
             print(books[numberBook]["title"], "is still borrowed")
     else:
         print("Book not found")
     
-def returnBook():
+def returnBook(user):
     if not books:
         print("There are no books available to return")
         return
@@ -38,8 +39,8 @@ def returnBook():
     numberBook = int(input("Choose Book : ")) - 1
 
     if numberBook < len(books):
-        if books[numberBook]["borrowed"]:
-            books[numberBook]["borrowed"] = False
+        if books[numberBook]["borrowed"] is users[user - 1]:
+            books[numberBook]["borrowed"] = None
             print("You have returned a book", books[numberBook]["title"])
         else:
             print("You dont have this book", books[numberBook]["title"])
@@ -59,13 +60,17 @@ def main():
             if choose == "1":
                 inputBook(input("Book name : "))
         elif role == "2":
+            print("User list:")
+            for i in range(len(users)):
+                print(i + 1, ".", users[i])
+            user = int(input("Choose : "))
             print("What do you want to do?")
             print("1. Borrow Book\n2. Return Book\n3. Exit")
             choose = input("Choose : ")
             if choose == "1":
-                borrowBook()
+                borrowBook(user)
             elif choose == "2":
-                returnBook()
+                returnBook(user)
         elif role == "3":
             break
         else:
